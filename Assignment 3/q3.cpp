@@ -1,70 +1,79 @@
 #include <iostream>
+#include <string>
 using namespace std;
+
+#define MAX 100   // max size of stack
+
 class Stack {
-	
+private:
+    char arr[MAX];
+    int top;
 
 public:
-	
-		
-    char arr[5];
-    int top;
     Stack() { top = -1; }
 
-    bool isEmpty() { return top == -1; }
-    bool isFull() { return top == 5 - 1; }
+    int isEmpty() {
+        return (top == -1);
+    }
 
-    void push(int x) {
+    int isFull() {
+        return (top == MAX - 1);
+    }
+
+    void push(char c) {
         if (isFull()) {
-            cout << "Stack Overflow\n";
-            return;
+            cout << "Stack Overflow!" << endl;
+        } else {
+            arr[++top] = c;
         }
-        arr[++top] = x;
     }
 
-    int pop() {
+    char pop() {
         if (isEmpty()) {
-            cout << "Stack Underflow\n";
-            return -1; // or some error code
+            return '\0';  // return null if nothing to pop
+        } else {
+            return arr[top--];
         }
-        return arr[top--];
     }
-    int calc(int a, int b, char c){
-	switch(c){
-			case '+':
-				return a+b;
-				break;
-			case '-' :
-				return a-b;
-				break;
-			case '*' :
-				return a*b;
-				break;
-			case '/' :
-				return a/b;
-				break;
-		}
-	}
+
+    char peek() {
+        if (isEmpty()) return '\0';
+        return arr[top];
+    }
 };
+int isMatchingPair(char open, char close){
+	if (open == '(' && close == ')') return 1;
+    if (open == '{' && close == '}') return 1;
+    if (open == '[' && close == ']') return 1;
+    return 0;
+}
 int main(){
-	int arr[5];
-	int a,b,c;
 	Stack s;
-	cout<<"Enter Expression : "<<endl;
-	for(int i=0;i<4;i++){
-		cin>>arr[i];
-	}
-	for(int i=0;i<4;i++){
-		if(isdigit(arr[i])){
-		s.push(arr[i]);
-	}
-		if(arr[i]=='*'||arr[i]=='+'||arr[i]=='-'||arr[i]=='/'){
-			a=s.pop();
-			b=s.pop();
-			c=s.calc(a,b,arr[i]);
+	string str;
+	cout<<"Enter String : ";
+	getline(cin, str);
+	int len=str.length();
+	for(int i=0;i<len;i++){
+		char c=str[i];
+		if(c=='('||c=='{'||c=='['){
 			s.push(c);
 		}
+		else if(c==')'||c=='}'||c==']'){
+			if(s.isEmpty()){
+				cout<<"Expression does not have balanced paranthesis"<<endl;
+			}
+			else{
+				char top=s.pop();
+				if(isMatchingPair(top, c)==0){
+					cout<<"Expression does not have balanced paranthesis.";
+					return 0;
+				}
+			}
+		}
 	}
-	cout<<s.pop();
-	
+	if(s.isEmpty()){
+		cout<<"Expression has balanced paranthesis."<<endl;
+	}
+	else
+		cout<<"Expression does not have balanced paranthesis.";
 }
-
