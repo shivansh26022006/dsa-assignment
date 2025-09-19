@@ -1,0 +1,69 @@
+#include <iostream>
+using namespace std;
+	struct LL{
+		int data;
+		struct LL *next;
+	};
+	typedef struct LL node;
+	node *head=NULL;
+	node *tail=NULL;
+	int count=0;
+	void print(){
+		node *p=head;
+		cout<<"Linked List : ";
+		while(p!=NULL){
+			cout<<p->data<<" ";
+			p=p->next;
+		}
+	}
+	void search(int n){
+		node *p=head;
+		int pos=1;
+		int found=0;
+		int count=0;
+		while(p!=NULL){
+			if(p->data==n){
+				cout<<"Element found at index : "<<pos<<endl;
+				found=1;
+				count++;
+			}
+			p=p->next;
+			pos++;
+		}
+		if(found==0){
+			cout<<"Element not found!"<<endl;
+		}
+		else{
+			cout<<"Element found "<<count<<" times"<<endl;
+		}
+	}
+	int main(){
+		int n,val;
+		cout<<"Enter n : ";
+		cin>>n;
+		while(count!=n){
+			if(head==NULL){
+				head=new node;
+				cout<<"Enter data : ";
+				cin>>head->data;
+				cout<<endl;
+				head->next=NULL;
+				cout<<head->data;
+				tail=head;
+				count++;
+			}
+			else{
+				tail->next=new node;
+				cout<<"Enter next data : ";
+				cin>>tail->next->data;
+				tail->next->next=NULL;
+				cout<<tail->next->data<<endl;
+				tail=tail->next;
+				count++;
+			}
+		}
+		cout<<"\nEnter Element to Search for : ";
+		cin>>val;
+		search(val);
+		
+	}
